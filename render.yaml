@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: ai-jiaoan-site
+    runtime: node
+    plan: free
+    buildCommand: npm install --prefix apps/server && npm install --prefix apps/web/client && npm run build --prefix apps/web/client && npm run build --prefix apps/server
+    startCommand: npm run start --prefix apps/server
+    healthCheckPath: /api/health

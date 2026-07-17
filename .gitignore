@@ -1,0 +1,49 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Build output
+dist/
+**/dist/
+.vite/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Local app data
+.claude/
+.agents/
+*.local
+.env
+.env.*
+
+# Generated caches and temp files
+node_cache/
+temp/
+outputs/
+snapshots/
+
+# OS / editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Large generated documents not needed for deploy repo
+*.docx
+*.doc
+*.pdf
+
+# Unrelated root artifacts
+*.png
+*.txt
+*.py
+/hello.html
+/server/
+/web/
+/templates/
+/项目路演/

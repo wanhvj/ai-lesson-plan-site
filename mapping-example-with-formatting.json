@@ -1,0 +1,97 @@
+{
+  "comment": "这是一个带有格式化配置的映射示例文件",
+  "mappings": [
+    {
+      "fieldId": "讲授新课（字数控制在200字左右，分为三部分撰写1、复习并导入新课2、新课3、总结，第二部分占170字左右）",
+      "position": { "t": 0, "r": 15, "c": 1 },
+      "mode": "multiline",
+      "split": "newline",
+      "formatting": {
+        "type": "structured",
+        "aiStructure": {
+          "description": "三部分结构化教学内容",
+          "parts": [
+            {
+              "label": "第一部分：复习并导入新课",
+              "duration": "约30字"
+            },
+            {
+              "label": "第二部分：新课",
+              "duration": "约170字，包含知识点讲解、案例分析、操作演示等"
+            },
+            {
+              "label": "第三部分：总结",
+              "duration": "约20字"
+            }
+          ]
+        },
+        "renderRules": [
+          {
+            "pattern": "^第[一二三四五六七八九十]+部分：",
+            "styles": {
+              "bold": true
+            }
+          },
+          {
+            "pattern": "^  ",
+            "styles": {
+              "indent": 1
+            }
+          },
+          {
+            "pattern": "^【.*?】",
+            "styles": {
+              "bold": true
+            }
+          }
+        ]
+      }
+    },
+    {
+      "fieldId": "在学情分析标题后追加具体内容",
+      "position": { "t": 0, "r": 4, "c": 1 },
+      "mode": "multiline",
+      "split": "newline",
+      "formatting": {
+        "type": "list",
+        "aiStructure": {
+          "description": "三个维度的学情分析",
+          "parts": [
+            {
+              "label": "知识基础",
+              "duration": "学生已掌握的相关知识"
+            },
+            {
+              "label": "能力基础",
+              "duration": "学生已具备的相关能力"
+            },
+            {
+              "label": "情感基础",
+              "duration": "学生的学习态度和习惯"
+            }
+          ]
+        },
+        "renderRules": [
+          {
+            "pattern": "^(知识基础|能力基础|情感基础)：",
+            "styles": {
+              "bold": true
+            }
+          }
+        ]
+      }
+    },
+    {
+      "fieldId": "课程名称",
+      "position": { "t": 0, "r": 0, "c": 1 },
+      "mode": "replace"
+    },
+    {
+      "fieldId": "教学重点",
+      "position": { "t": 0, "r": 7, "c": 1 },
+      "mode": "multiline",
+      "split": "newline"
+    }
+  ]
+}
+
