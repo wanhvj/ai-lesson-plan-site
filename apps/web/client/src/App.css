@@ -3954,3 +3954,452 @@ body::before {
 .brand-logo::after {
   color: #fff7df !important;
 }
+
+/* Mobile-first polish added after desktop styles so wide screens stay unchanged. */
+@media (max-width: 760px) {
+  html,
+  body,
+  #root {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  .simple-homepage,
+  .simple-tool-page,
+  .lesson-app,
+  .ppt-studio,
+  .care-page {
+    min-height: 100svh !important;
+    padding: 12px !important;
+    overflow-x: hidden !important;
+  }
+
+  .tear-cover {
+    padding: 12px;
+    background: #efe1ca;
+  }
+
+  .tear-cover-card {
+    width: min(100%, 420px);
+    height: auto;
+    aspect-ratio: 9 / 16;
+    border-radius: 18px !important;
+    box-shadow: 0 24px 70px rgba(75, 46, 24, 0.24) !important;
+  }
+
+  .tear-cover-card img,
+  .tear-cover-canvas {
+    object-fit: contain;
+    background: #efe1ca;
+  }
+
+  .simple-home-shell,
+  .simple-tool-card {
+    width: 100% !important;
+    padding: 18px !important;
+    border-radius: 14px !important;
+  }
+
+  .toolbox-homepage .simple-home-shell {
+    min-height: auto;
+  }
+
+  .toolbox-homepage .simple-home-shell::before {
+    inset: 8px;
+    border-radius: 10px;
+  }
+
+  .toolbox-homepage .simple-home-shell::after {
+    display: none;
+  }
+
+  .simple-home-header {
+    text-align: left;
+  }
+
+  .simple-home-badge {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  .toolbox-homepage .simple-home-header h1 {
+    margin-top: 12px;
+    font-size: clamp(28px, 10vw, 38px) !important;
+    line-height: 1.18;
+    letter-spacing: -0.04em !important;
+  }
+
+  .simple-tool-grid {
+    margin-top: 18px;
+    grid-template-columns: 1fr !important;
+    gap: 10px;
+  }
+
+  .toolbox-homepage .simple-tool-entry,
+  .toolbox-homepage .simple-tool-entry:nth-child(n),
+  .toolbox-homepage .simple-tool-entry:hover {
+    min-height: 92px;
+    padding: 16px 18px !important;
+    align-content: center;
+    border-radius: 10px !important;
+    transform: none;
+  }
+
+  .toolbox-homepage .simple-tool-entry::after {
+    width: 46px;
+    height: 12px;
+    right: 12px;
+    top: 10px;
+  }
+
+  .toolbox-homepage .simple-tool-entry strong {
+    font-size: 27px;
+  }
+
+  .toolbox-homepage .simple-tool-entry span {
+    font-size: 13px;
+    line-height: 1.45;
+  }
+
+  .tool-shell-bar,
+  .tool-shell-bar.simple,
+  .ppt-topbar {
+    display: grid !important;
+    gap: 10px !important;
+    padding: 12px !important;
+    border-radius: 12px !important;
+  }
+
+  .tool-shell-back,
+  .ppt-text-button,
+  .ppt-primary-button,
+  .ppt-generate-button,
+  .ppt-file-button,
+  .simple-tool-actions button,
+  .care-action-row button {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+    box-sizing: border-box;
+  }
+
+  .lesson-app {
+    margin: 0 auto !important;
+  }
+
+  .lesson-app h2 {
+    padding: 16px !important;
+    font-size: 24px !important;
+    line-height: 1.25;
+  }
+
+  .workbench-tabs {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex !important;
+    grid-template-columns: none !important;
+    gap: 8px !important;
+    margin: 0 -2px 14px;
+    padding: 8px 2px 10px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+  }
+
+  .workbench-tab {
+    flex: 0 0 124px;
+    min-height: 58px !important;
+    padding: 10px !important;
+    scroll-snap-align: start;
+  }
+
+  .workbench-tab span {
+    font-size: 13px;
+  }
+
+  .workbench-tab small {
+    font-size: 11px;
+  }
+
+  .top-upload-row,
+  .reference-upload-row,
+  .settings-panel > div:nth-child(2),
+  .action-bar,
+  .step-actions,
+  .content-guide,
+  .field-card-summary,
+  .field-card-status,
+  .field-card-tools,
+  .agent-helper-card {
+    align-items: stretch !important;
+    flex-direction: column !important;
+  }
+
+  .settings-panel,
+  .fields-workspace,
+  .content-editor-panel,
+  .preview-panel,
+  .empty-guide,
+  .template-grid-panel {
+    padding: 14px !important;
+    border-radius: 12px !important;
+  }
+
+  .template-grid-panel {
+    position: relative;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .template-grid-panel::before {
+    content: "左右滑动查看完整表格";
+    display: block;
+    margin-bottom: 8px;
+    color: var(--newsprint-muted);
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+  .template-grid-panel table {
+    min-width: 640px;
+  }
+
+  .field-card {
+    padding: 12px !important;
+  }
+
+  .field-card-summary > div:first-child,
+  .field-card-status,
+  .field-card-tools {
+    width: 100%;
+  }
+
+  .preview-panel {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .preview-panel > div:first-child {
+    display: grid !important;
+    gap: 10px !important;
+  }
+
+  .docx-preview-container {
+    min-width: 680px;
+  }
+
+  .agent-dialog {
+    width: calc(100vw - 20px);
+    height: calc(100svh - 20px) !important;
+    max-height: calc(100svh - 20px) !important;
+    grid-template-columns: 1fr !important;
+    overflow: hidden;
+  }
+
+  .agent-dialog-side {
+    padding: 14px !important;
+  }
+
+  .agent-dialog-side img {
+    display: none;
+  }
+
+  .agent-chat-panel {
+    min-height: 0;
+  }
+
+  .agent-input-row {
+    grid-template-columns: 1fr !important;
+  }
+
+  .ppt-topbar h1 {
+    font-size: 27px !important;
+    line-height: 1.2;
+  }
+
+  .ppt-topbar > div:last-child,
+  .ppt-outline-page > header > div:last-child,
+  .ppt-preview-page > div > header > div {
+    display: grid !important;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .ppt-stepper {
+    justify-content: flex-start !important;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    scroll-snap-type: x mandatory;
+  }
+
+  .ppt-stepper > button {
+    flex: 0 0 108px;
+    justify-content: flex-start;
+    scroll-snap-align: start;
+  }
+
+  .ppt-create-main,
+  .ppt-chat-card,
+  .ppt-outline-page,
+  .ppt-preview-page,
+  .ppt-model-settings,
+  .ppt-upload-card,
+  .ppt-setup-card,
+  .ppt-auto-design-card,
+  .ppt-edit-card {
+    padding: 14px !important;
+    border-radius: 12px !important;
+  }
+
+  .ppt-create-layout,
+  .ppt-preview-page,
+  .ppt-setup-card,
+  .ppt-outline-grid,
+  .ppt-model-settings {
+    grid-template-columns: 1fr !important;
+  }
+
+  .ppt-chat-card {
+    min-height: 360px !important;
+  }
+
+  .ppt-preview-page > aside {
+    display: flex !important;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 0 0 10px !important;
+    border-right: 0 !important;
+    border-bottom: 1px solid rgba(92, 61, 37, 0.16) !important;
+  }
+
+  .ppt-preview-page > aside button {
+    flex: 0 0 168px;
+  }
+
+  .ppt-html-frame {
+    min-height: 320px !important;
+    border-radius: 12px !important;
+  }
+
+  .ppt-present-overlay {
+    grid-template-columns: 36px minmax(0, 1fr) 36px !important;
+    gap: 6px !important;
+    padding: 12px !important;
+  }
+
+  .care-topbar h2 {
+    font-size: 28px;
+    line-height: 1.2;
+  }
+
+  .care-summary-strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  .care-summary-strip div {
+    padding: 12px 8px !important;
+    border-bottom: 0 !important;
+  }
+
+  .care-summary-strip strong {
+    font-size: 28px;
+  }
+
+  .care-summary-strip span {
+    font-size: 11px;
+  }
+
+  .care-inbox {
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+  }
+
+  .care-inbox-column {
+    min-height: auto !important;
+    padding: 14px !important;
+    border-radius: 12px !important;
+  }
+
+  .care-inbox-column header {
+    display: grid;
+    gap: 4px;
+  }
+
+  .care-inbox-column h3 {
+    font-size: 21px !important;
+  }
+
+  .care-inbox-row {
+    min-height: auto !important;
+    grid-template-columns: 1fr !important;
+    padding: 14px !important;
+  }
+
+  .care-inbox-row em {
+    justify-self: start;
+    min-width: 0;
+  }
+
+  .care-detail-overlay {
+    align-items: flex-end;
+    justify-content: center;
+    padding: 0 !important;
+  }
+
+  .care-detail-drawer {
+    width: 100% !important;
+    max-height: 86svh !important;
+    padding: 18px !important;
+    border-radius: 16px 16px 0 0 !important;
+  }
+
+  .care-info-grid,
+  .care-action-row,
+  .treehole-settings-grid,
+  .treehole-experience {
+    grid-template-columns: 1fr !important;
+  }
+
+  .treehole-page .simple-tool-card,
+  .simple-tool-card.wide {
+    width: 100% !important;
+  }
+
+  .treehole-companion-panel {
+    position: relative !important;
+    top: auto !important;
+    min-height: auto !important;
+  }
+
+  .treehole-chat-log {
+    max-height: 38svh;
+    overflow-y: auto;
+  }
+
+  .simple-treehole-input {
+    min-height: 112px !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .care-summary-strip {
+    grid-template-columns: 1fr !important;
+  }
+
+  .care-summary-strip div {
+    border-bottom: 1px solid rgba(92, 61, 37, 0.14) !important;
+  }
+
+  .care-summary-strip div:last-child {
+    border-bottom: 0 !important;
+  }
+
+  .toolbox-homepage .simple-tool-entry strong {
+    font-size: 24px;
+  }
+
+  .ppt-html-frame {
+    min-height: 260px !important;
+  }
+}
