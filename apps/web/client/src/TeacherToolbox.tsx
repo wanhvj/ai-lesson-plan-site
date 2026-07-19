@@ -2,9 +2,9 @@ import { useMemo, useRef, useState } from 'react'
 import './App.css'
 import LessonWorkbench from './LessonWorkbench'
 import PptStudio from './PptStudio'
-import treeholeCoverImage from './assets/treehole-cover.png'
+import treeholeCoverImage from './assets/treehole-cover-desktop.webp'
 import treeholeCoverMobileImage from './assets/treehole-cover-mobile.webp'
-import toolboxCoverImage from './assets/toolbox-cover.png'
+import toolboxCoverImage from './assets/toolbox-cover-desktop.webp'
 import toolboxCoverMobileImage from './assets/toolbox-cover-mobile.webp'
 
 type ToolKey = 'home' | 'lesson' | 'ppt' | 'care' | 'treehole'
@@ -218,7 +218,16 @@ function TearAwayCover({
       <button type="button" className="tear-cover-card" aria-label={label} onClick={startTearAnimation}>
         <picture>
           {mobileImageSrc ? <source media="(max-width: 760px)" srcSet={mobileImageSrc} /> : null}
-          <img ref={imageRef} src={imageSrc} alt="" />
+          <img
+            ref={imageRef}
+            src={imageSrc}
+            alt=""
+            width="1600"
+            height="900"
+            loading="eager"
+            decoding="async"
+            fetchPriority="high"
+          />
         </picture>
         <canvas ref={canvasRef} className="tear-cover-canvas" />
       </button>
