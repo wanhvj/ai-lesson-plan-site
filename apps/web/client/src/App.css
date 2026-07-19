@@ -2047,6 +2047,7 @@ body::before {
   cursor: pointer;
 }
 
+.tear-cover-card picture,
 .tear-cover-card img,
 .tear-cover-canvas {
   display: block;

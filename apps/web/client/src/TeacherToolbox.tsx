@@ -2,8 +2,10 @@ import { useMemo, useRef, useState } from 'react'
 import './App.css'
 import LessonWorkbench from './LessonWorkbench'
 import PptStudio from './PptStudio'
-import treeholeCoverImage from './assets/treehole-cover-mobile.webp'
-import toolboxCoverImage from './assets/toolbox-cover-mobile.webp'
+import treeholeCoverImage from './assets/treehole-cover.png'
+import treeholeCoverMobileImage from './assets/treehole-cover-mobile.webp'
+import toolboxCoverImage from './assets/toolbox-cover.png'
+import toolboxCoverMobileImage from './assets/toolbox-cover-mobile.webp'
 
 type ToolKey = 'home' | 'lesson' | 'ppt' | 'care' | 'treehole'
 type Provider = 'openai' | 'doubao' | 'deepseek' | 'qwen' | 'openai_next' | 'ai_codex'
@@ -96,7 +98,17 @@ function defaultModelForProvider(provider: Provider) {
   return ''
 }
 
-function TearAwayCover({ imageSrc, label, onEntered }: { imageSrc: string; label: string; onEntered: () => void }) {
+function TearAwayCover({
+  imageSrc,
+  mobileImageSrc,
+  label,
+  onEntered,
+}: {
+  imageSrc: string
+  mobileImageSrc?: string
+  label: string
+  onEntered: () => void
+}) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const imageRef = useRef<HTMLImageElement>(null)
   const [isTearing, setIsTearing] = useState(false)
@@ -204,7 +216,10 @@ function TearAwayCover({ imageSrc, label, onEntered }: { imageSrc: string; label
   return (
     <div className={`tear-cover ${isTearing ? 'tearing' : ''}`}>
       <button type="button" className="tear-cover-card" aria-label={label} onClick={startTearAnimation}>
-        <img ref={imageRef} src={imageSrc} alt="" />
+        <picture>
+          {mobileImageSrc ? <source media="(max-width: 760px)" srcSet={mobileImageSrc} /> : null}
+          <img ref={imageRef} src={imageSrc} alt="" />
+        </picture>
         <canvas ref={canvasRef} className="tear-cover-canvas" />
       </button>
     </div>
@@ -595,7 +610,14 @@ function TeacherToolbox() {
   if (activeView === 'treehole') {
     return (
       <div className="simple-tool-page treehole-page">
-        {showTreeholeCover ? <TearAwayCover imageSrc={treeholeCoverImage} label="进入树洞" onEntered={() => setShowTreeholeCover(false)} /> : null}
+        {showTreeholeCover ? (
+          <TearAwayCover
+            imageSrc={treeholeCoverImage}
+            mobileImageSrc={treeholeCoverMobileImage}
+            label="进入树洞"
+            onEntered={() => setShowTreeholeCover(false)}
+          />
+        ) : null}
         <div className="simple-tool-card wide treehole-paper-shell">
           <button type="button" className="tool-shell-back" onClick={() => setActiveView('home')}>
             返回首页
@@ -722,7 +744,14 @@ function TeacherToolbox() {
 
   return (
     <div className="simple-homepage toolbox-homepage">
-      {showHomeCover ? <TearAwayCover imageSrc={toolboxCoverImage} label="进入教师百宝箱" onEntered={() => setShowHomeCover(false)} /> : null}
+      {showHomeCover ? (
+        <TearAwayCover
+          imageSrc={toolboxCoverImage}
+          mobileImageSrc={toolboxCoverMobileImage}
+          label="进入教师百宝箱"
+          onEntered={() => setShowHomeCover(false)}
+        />
+      ) : null}
       <div className="simple-home-shell">
         <header className="simple-home-header">
           <div className="simple-home-badge">教师百宝箱</div>
