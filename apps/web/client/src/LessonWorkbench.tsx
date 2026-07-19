@@ -29,6 +29,23 @@ type AgentMessage = {
   content: string
 }
 
+type Provider = 'openai' | 'doubao' | 'deepseek' | 'qwen' | 'openai_next' | 'ai_codex'
+
+function providerName(provider: Provider) {
+  if (provider === 'doubao') return '豆包'
+  if (provider === 'deepseek') return 'DeepSeek'
+  if (provider === 'qwen') return '通义千问'
+  if (provider === 'openai_next') return 'GPT-5.6 Terra'
+  if (provider === 'ai_codex') return 'Ai-Codex GPT-5.6 Terra'
+  return 'OpenAI'
+}
+
+function defaultModelForProvider(provider: Provider) {
+  if (provider === 'qwen') return 'qwen-plus'
+  if (provider === 'openai_next' || provider === 'ai_codex') return 'gpt-5.6-terra'
+  return ''
+}
+
 function App() {
   const [file, setFile] = useState<File | null>(null)
   const [loading, setLoading] = useState(false)
@@ -46,7 +63,7 @@ function App() {
   const [topic, setTopic] = useState('')
   const [style, setStyle] = useState<'严谨' | '活泼'>('严谨')
   const [detail, setDetail] = useState<'brief' | 'normal' | 'rich'>('normal')
-  const [provider, setProvider] = useState<'openai' | 'doubao' | 'deepseek'>(() => (localStorage.getItem('AI_PROVIDER') as any) || 'openai')
+  const [provider, setProvider] = useState<Provider>(() => (localStorage.getItem('AI_PROVIDER') as Provider) || 'openai')
   const [apiKey, setApiKey] = useState<string>(() => localStorage.getItem('AI_API_KEY') || '')
   const [modelId, setModelId] = useState<string>(() => localStorage.getItem('AI_MODEL_ID') || '')
   const [referenceContent, setReferenceContent] = useState<string>('')
@@ -71,9 +88,19 @@ function App() {
   const [agentMessages, setAgentMessages] = useState<AgentMessage[]>([
     {
       role: 'assistant',
-      content: '你好呀，我是 Agent 小助手。你可以把这节课的想法随便说给我听，不用组织得很完整。我们就像两个老师一起备课一样，先把思路聊顺，再整理成能写进教案里的表达。',
+      content: '你好，我是 Agent 小助手。你可以告诉我这节课的主题、学生特点或你的教学风格，我来帮你一起梳理教案思路。',
     },
   ])
+
+  const updateProvider = (value: Provider) => {
+    setProvider(value)
+    localStorage.setItem('AI_PROVIDER', value)
+    const nextModel = defaultModelForProvider(value)
+    if (nextModel) {
+      setModelId(nextModel)
+      localStorage.setItem('AI_MODEL_ID', nextModel)
+    }
+  }
 
   // === 文件选择 ===
   const onChoose = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -474,7 +501,7 @@ function App() {
     }
     if (!apiKey) { setMsg('请先填写 API Key'); return }
     setLoading(true)
-    setMsg(`正在调用${provider === 'doubao' ? '豆包' : provider === 'deepseek' ? 'DeepSeek' : 'OpenAI'} AI生成内容...`)
+      setMsg(`正在调用${providerName(provider)} AI生成内容...`)
     try {
       // 去重：相同描述的字段只发一次给AI
       const uniqueFields = [...new Set(validCells.map(c => c.description.trim()))]
@@ -529,7 +556,7 @@ function App() {
         return next
       })
       const filled = uniqueFields.filter(f => v[f]).length
-      setMsg(`AI 内容已生成（使用${data.provider === 'doubao' ? '豆包' : data.provider === 'deepseek' ? 'DeepSeek' : 'OpenAI'}）：${filled}/${uniqueFields.length} 个字段已填充`)
+      setMsg(`AI 内容已生成（使用${providerName(data.provider || provider)}）：${filled}/${uniqueFields.length} 个字段已填充`)
     } catch (e: any) {
       setMsg(`AI生成失败：${e?.message ?? '未知错误'}`)
     } finally {
@@ -736,10 +763,13 @@ function App() {
         </div>
         <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 8 }}>AI 设置</div>
         <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
-          <select value={provider} onChange={e => { const p = e.target.value as any; setProvider(p); localStorage.setItem('AI_PROVIDER', p) }}>
+          <select value={provider} onChange={e => updateProvider(e.target.value as Provider)}>
             <option value="openai">OpenAI</option>
             <option value="doubao">豆包</option>
             <option value="deepseek">DeepSeek</option>
+            <option value="qwen">通义千问（阿里云百炼）</option>
+            <option value="openai_next">GPT-5.6 Terra（OpenAI Next Credits）</option>
+            <option value="ai_codex">GPT-5.6 Terra（Ai-Codex）</option>
           </select>
           <input placeholder="课程主题（必填）" value={topic} onChange={e => setTopic(e.target.value)} style={{ minWidth: 200 }} />
           <input placeholder="下载文件名（可选）" value={fileName} onChange={e => setFileName(e.target.value)} style={{ minWidth: 150 }} />
@@ -755,7 +785,7 @@ function App() {
           <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
             <input
               type={showApiKey ? 'text' : 'password'}
-              placeholder={`${provider === 'doubao' ? '豆包' : provider === 'deepseek' ? 'DeepSeek' : 'OpenAI'} API Key`}
+              placeholder={`${providerName(provider)} API Key`}
               value={apiKey}
               onChange={e => { setApiKey(e.target.value); localStorage.setItem('AI_API_KEY', e.target.value) }}
               style={{ minWidth: 220 }}
@@ -767,8 +797,12 @@ function App() {
               {showApiKey ? '隐藏' : '显示'}
             </button>
           </div>
-          {provider === 'doubao' && <input placeholder="推理接入点ID (ep-xxx)" value={modelId} onChange={e => { setModelId(e.target.value); localStorage.setItem('AI_MODEL_ID', e.target.value) }} style={{ minWidth: 200 }} />}
-          {provider === 'deepseek' && <input placeholder="模型名（可选，默认 deepseek-chat）" value={modelId} onChange={e => { setModelId(e.target.value); localStorage.setItem('AI_MODEL_ID', e.target.value) }} style={{ minWidth: 220 }} />}
+          <input
+            placeholder={provider === 'doubao' ? '推理接入点ID (ep-xxx)' : provider === 'deepseek' ? '模型名（可选，默认 deepseek-chat）' : provider === 'qwen' ? '默认 qwen-plus，也可填 qwen-max 等' : provider === 'openai_next' || provider === 'ai_codex' ? '默认 gpt-5.6-terra' : '模型名（可选）'}
+            value={modelId}
+            onChange={e => { setModelId(e.target.value); localStorage.setItem('AI_MODEL_ID', e.target.value) }}
+            style={{ minWidth: 240 }}
+          />
         </div>
         {/* 参考内容 */}
         <div style={{ marginTop: 8 }}>

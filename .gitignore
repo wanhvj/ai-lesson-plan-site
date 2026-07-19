@@ -40,9 +40,14 @@ Thumbs.db
 
 # Unrelated root artifacts
 *.png
+!apps/web/client/src/assets/ai-agent-assistant.png
+!apps/web/client/src/assets/treehole-cover.png
+!apps/web/client/src/assets/toolbox-cover.png
 *.txt
 *.py
 /hello.html
+/node_cache_local/
+/apps/web/client/capture-teacher-toolbox.cjs
 /server/
 /web/
 /templates/

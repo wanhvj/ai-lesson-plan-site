@@ -306,4 +306,27 @@ analyzeRouter.post('/analyze-example', upload.single('file'), async (req, res) =
   }
 });
 
+// PPT 创作室只需读取教案正文。第一版限定 Word，避免把多种格式的差异带进制作流程。
+analyzeRouter.post('/analyze-presentation-source', upload.single('file'), async (req, res) => {
+  try {
+    if (!req.file) return res.status(400).json({ error: 'no file' });
+    if (!req.file.originalname.toLowerCase().endsWith('.docx')) {
+      return res.status(400).json({ error: 'only docx is supported' });
+    }
+    const zip = new AdmZip(req.file.buffer);
+    const entry = zip.getEntry('word/document.xml');
+    if (!entry) return res.status(400).json({ error: 'invalid docx' });
+    const xml = entry.getData().toString('utf-8');
+    const paragraphs = Array.from(xml.matchAll(/<w:p[\s\S]*?<\/w:p>/g))
+      .map(match => textOf(match[0]).replace(/\s+/g, ' ').trim())
+      .filter(Boolean);
+    const content = Array.from(new Set(paragraphs)).join('\n').slice(0, 18000);
+    const title = paragraphs.find(item => item.length >= 4 && item.length <= 40)
+      || req.file.originalname.replace(/\.docx$/i, '');
+    return res.json({ title, content });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'presentation source analysis failed' });
+  }
+});
 
